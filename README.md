@@ -212,7 +212,7 @@ python main.py
 | Member   | Responsibility        |
 | -------- | --------------------- |
 | Nabil Gathfan Putra Mulyana | Core & Infrastructure |
-| Putri Balq | UI & Navigation       |
+| Putri Balqis | UI & Navigation       |
 | Raja Maulidinsyah Putra | Modules & Integration |
 
 ---
