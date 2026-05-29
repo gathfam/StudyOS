@@ -3,14 +3,14 @@ class PlannerHandlers:
         self.controller = controller
 
     def handleAddTaskSubmit(self, title, description):
-        task_data = {
+        taskData = {
             "title": title,
             "description": description,
             "status": "pending"
         }
-        self.controller.addTask(task_data)
+        self.controller.addTask(taskData)
         print(f"[PlannerHandlers] Task added successfully: '{title}' - '{description}'")
 
-    def handleCompleteTaskClick(self, task_id):
-        self.controller.completeTask(task_id)
-        print(f"[PlannerHandlers] Task completed: ID {task_id}")
+    def handleCompleteTaskClick(self, taskId):
+        self.controller.completeTask(taskId)
+        print(f"[PlannerHandlers] Task completed: ID {taskId}")

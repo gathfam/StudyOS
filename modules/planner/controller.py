@@ -1,20 +1,20 @@
 class PlannerController:
-    def __init__(self, task_service=None, event_bus=None):
-        self.task_service = task_service
-        self.event_bus = event_bus
+    def __init__(self, taskService=None, eventBus=None):
+        self.taskService = taskService
+        self.eventBus = eventBus
 
     def loadTasks(self):
-        if self.task_service:
-            return self.task_service.get_tasks()
+        if self.taskService:
+            return self.taskService.getTasks()
         
-        # Dummy data untuk keperluan testing jika task_service belum di-inject
+        # Dummy data untuk keperluan testing jika taskService belum di-inject
         return [
             {
                 "id": 1,
                 "title": "Tugas Matematika Diskrit",
                 "subject": "Matematika",
                 "description": "Mengerjakan soal latihan bab 1 sampai 3",
-                "due_date": "2026-06-01",
+                "dueDate": "2026-06-01",
                 "priority": "High",
                 "completed": False
             },
@@ -23,28 +23,28 @@ class PlannerController:
                 "title": "Review Design Pattern",
                 "subject": "Software Engineering",
                 "description": "Membaca kembali materi MVC dan Observer pattern",
-                "due_date": "2026-06-03",
+                "dueDate": "2026-06-03",
                 "priority": "Medium",
                 "completed": False
             }
         ]
 
-    def addTask(self, task_data):
+    def addTask(self, taskData):
         try:
-            if self.task_service:
-                self.task_service.create_task(task_data)
+            if self.taskService:
+                self.taskService.createTask(taskData)
             
-            if self.event_bus:
-                self.event_bus.emit('task_created')
+            if self.eventBus:
+                self.eventBus.emit('taskCreated')
         except Exception as e:
             print(f"Error adding task: {e}")
 
-    def completeTask(self, task_id):
+    def completeTask(self, taskId):
         try:
-            if self.task_service:
-                self.task_service.complete_task(task_id)
+            if self.taskService:
+                self.taskService.completeTask(taskId)
             
-            if self.event_bus:
-                self.event_bus.emit('task_completed')
+            if self.eventBus:
+                self.eventBus.emit('taskCompleted')
         except Exception as e:
             print(f"Error completing task: {e}")

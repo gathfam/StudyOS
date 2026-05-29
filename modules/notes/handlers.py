@@ -2,11 +2,11 @@ class NotesHandlers:
     def __init__(self, controller):
         self.controller = controller
 
-    def handleAddNoteSubmit(self, title, content, note_type):
-        note_data = {
+    def handleAddNoteSubmit(self, title, content, noteType):
+        noteData = {
             "title": title,
             "content": content,
-            "note_type": note_type
+            "noteType": noteType
         }
-        self.controller.addNote(note_data)
+        self.controller.addNote(noteData)
         print(f"[NotesHandlers] Note added successfully: '{title}'")
