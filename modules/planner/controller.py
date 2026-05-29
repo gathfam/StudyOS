@@ -1,3 +1,8 @@
+# Cara Pakai di UI (PlannerPage):
+# self.controller = PlannerController(taskService, eventBus)
+# self.handlers = PlannerHandlers(self.controller)
+# Untuk load data: self.controller.loadTasks()
+
 class PlannerController:
     def __init__(self, taskService=None, eventBus=None):
         self.taskService = taskService
