@@ -3,7 +3,7 @@ class PlannerController:
         self.task_service = task_service
         self.event_bus = event_bus
 
-    def load_tasks(self):
+    def loadTasks(self):
         if self.task_service:
             return self.task_service.get_tasks()
         
@@ -29,7 +29,7 @@ class PlannerController:
             }
         ]
 
-    def add_task(self, task_data):
+    def addTask(self, task_data):
         try:
             if self.task_service:
                 self.task_service.create_task(task_data)
@@ -39,7 +39,7 @@ class PlannerController:
         except Exception as e:
             print(f"Error adding task: {e}")
 
-    def complete_task(self, task_id):
+    def completeTask(self, task_id):
         try:
             if self.task_service:
                 self.task_service.complete_task(task_id)
