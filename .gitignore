@@ -4,3 +4,4 @@ core/test_input.py
 __pycache__/
 *.pyc
 *.db
+docs/
