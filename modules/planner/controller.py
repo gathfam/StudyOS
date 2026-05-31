@@ -38,9 +38,6 @@ class PlannerController:
         try:
             if self.taskService and hasattr(self.taskService, 'createTask'):
                 self.taskService.createTask(**taskData)
-            
-            if self.eventBus:
-                self.eventBus.emit('taskCreated')
         except Exception as e:
             print(f"Error adding task: {e}")
 
