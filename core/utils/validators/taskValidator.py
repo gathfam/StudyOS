@@ -6,9 +6,11 @@ def validateTaskCreation(title, priority):
     priority = validateChoice(priority, ["LOW", "MEDIUM", "HIGH"], "priority")
     return title, priority
 
-def validateTaskUpdate(title=None, priority=None, completed=None):
+def validateTaskUpdate(taskId, title=None, priority=None, completed=None, dueDate=None):
     """Memvalidasi parameter saat pembaharuan task."""
     validated = {}
+    validated["taskId"] = validateInteger(taskId, "taskId", minValue=1)
+    
     if title is not None:
         validated["title"] = validateRequiredString(title, "title")
     if priority is not None:
@@ -19,4 +21,10 @@ def validateTaskUpdate(title=None, priority=None, completed=None):
             validated["completed"] = 1 if completed else 0
         else:
             validated["completed"] = validateChoice(completed, [0, 1], "completed")
+    if dueDate is not None:
+        if dueDate != "":
+            validated["dueDate"] = validateRequiredString(dueDate, "dueDate")
+        else:
+            validated["dueDate"] = None
     return validated
+

@@ -120,7 +120,11 @@ def updateTaskStatus(taskId, completed):
 
 def updateTask(taskId, title=None, subject=None, description=None, dueDate=None, plannedDate=None, priority=None, completed=None):
     """Memperbarui informasi task di database dan menyelaraskan dengan deadline."""
-    taskId = validateInteger(taskId, "taskId", minValue=1)
+    # Validasi input menggunakan validator eksternal
+    validated = validateTaskUpdate(taskId, title, priority, completed, dueDate)
+    taskId = validated["taskId"]
+    if dueDate is not None:
+        dueDate = validated["dueDate"]
     
     # Ambil data task saat ini
     oldTask = getTask(taskId)
@@ -131,8 +135,6 @@ def updateTask(taskId, title=None, subject=None, description=None, dueDate=None,
     updates = []
     params = []
     
-    # Validasi input menggunakan validator eksternal
-    validated = validateTaskUpdate(title, priority, completed)
     completedVal = validated.get("completed", oldTask["completed"])
     
     if title is not None:
@@ -148,12 +150,6 @@ def updateTask(taskId, title=None, subject=None, description=None, dueDate=None,
         params.append(description)
         
     if dueDate is not None:
-        # dueDate bisa diisi string tanggal atau None untuk menghapusnya
-        if dueDate != "":
-            from core.utils import validateRequiredString
-            dueDate = validateRequiredString(dueDate, "dueDate")
-        else:
-            dueDate = None
         updates.append("due_date = ?")
         params.append(dueDate)
         
@@ -168,6 +164,7 @@ def updateTask(taskId, title=None, subject=None, description=None, dueDate=None,
     if completed is not None:
         updates.append("completed = ?")
         params.append(completedVal)
+
 
         
     if not updates:

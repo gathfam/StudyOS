@@ -133,39 +133,3 @@ def deleteNote(noteId):
     eventBus.emit("noteDeleted", noteToDelete)
     return True
 
-if __name__ == "__main__":
-
-    print("Testing NoteService...")
-    
-    # Menampung event hasil emit
-    emittedNotes = []
-    
-    def onNoteCreated(noteData):
-        print(f"Event Received! Note Created: {noteData['title']} (Type: {noteData['noteType']})")
-        emittedNotes.append(noteData)
-        
-    # Subscribe ke event bus
-    eventBus.subscribe("noteCreated", onNoteCreated)
-    
-    # Buat note baru untuk pengujian
-    testNote = createNote(
-        title="Catatan Kuliah Pemrograman",
-        content="Mempelajari konsep Clean Architecture dan Event Bus di Python.",
-        noteType="LECTURE"
-    )
-    
-    print("\nCreated Note Object:")
-    print(testNote)
-    
-    # Ambil seluruh list note
-    allNotes = getNote()
-    print(f"\nAll Notes (Total: {len(allNotes)}):")
-    for n in allNotes:
-        print(f"- {n['title']} (Type: {n['noteType']})")
-        
-    # Verifikasi fungsionalitas
-    if testNote and len(emittedNotes) == 1 and emittedNotes[0]["id"] == testNote["id"]:
-        print("\nNoteService tests passed successfully!")
-    else:
-        print("\nNoteService tests failed.")
-        exit(1)
