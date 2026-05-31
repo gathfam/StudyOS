@@ -5,8 +5,11 @@ class PlannerHandlers:
     def handleAddTaskSubmit(self, title, description):
         taskData = {
             "title": title,
+            "subject": None,
             "description": description,
-            "status": "pending"
+            "dueDate": None,
+            "plannedDate": None,
+            "priority": "MEDIUM"
         }
         self.controller.addTask(taskData)
         print(f"[PlannerHandlers] Task added successfully: '{title}' - '{description}'")

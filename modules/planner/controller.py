@@ -9,8 +9,8 @@ class PlannerController:
         self.eventBus = eventBus
 
     def loadTasks(self):
-        if self.taskService:
-            return self.taskService.getTasks()
+        if self.taskService and hasattr(self.taskService, 'getTask'):
+            return self.taskService.getTask()
         
         # Dummy data untuk keperluan testing jika taskService belum di-inject
         return [
@@ -36,8 +36,8 @@ class PlannerController:
 
     def addTask(self, taskData):
         try:
-            if self.taskService:
-                self.taskService.createTask(taskData)
+            if self.taskService and hasattr(self.taskService, 'createTask'):
+                self.taskService.createTask(**taskData)
             
             if self.eventBus:
                 self.eventBus.emit('taskCreated')
@@ -47,7 +47,10 @@ class PlannerController:
     def completeTask(self, taskId):
         try:
             if self.taskService:
-                self.taskService.completeTask(taskId)
+                if hasattr(self.taskService, 'completeTask'):
+                    self.taskService.completeTask(taskId)
+                else:
+                    print("Warning: completeTask is not implemented in TaskService.")
             
             if self.eventBus:
                 self.eventBus.emit('taskCompleted')
