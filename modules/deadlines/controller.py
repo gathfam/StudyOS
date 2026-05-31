@@ -5,7 +5,12 @@ class DeadlinesController:
 
     def loadDeadlines(self):
         if self.deadlineService:
-            return self.deadlineService.getDeadlines()
+            if hasattr(self.deadlineService, 'getDeadlines'):
+                return self.deadlineService.getDeadlines()
+            elif hasattr(self.deadlineService, 'getDeadline'):
+                return self.deadlineService.getDeadline()
+            else:
+                print("Warning: getDeadlines/getDeadline is not implemented in DeadlineService.")
         
         # Data dummy untuk keperluan testing jika deadlineService belum di-inject
         return [
@@ -26,7 +31,10 @@ class DeadlinesController:
     def addDeadline(self, deadlineData):
         try:
             if self.deadlineService:
-                self.deadlineService.createDeadline(deadlineData)
+                if hasattr(self.deadlineService, 'createDeadline'):
+                    self.deadlineService.createDeadline(**deadlineData) if isinstance(deadlineData, dict) else self.deadlineService.createDeadline(deadlineData)
+                else:
+                    print("Warning: createDeadline is not implemented in DeadlineService.")
             
             if self.eventBus:
                 self.eventBus.emit('deadlineAdded')
@@ -36,7 +44,10 @@ class DeadlinesController:
     def completeDeadline(self, deadlineId):
         try:
             if self.deadlineService:
-                self.deadlineService.completeDeadline(deadlineId)
+                if hasattr(self.deadlineService, 'completeDeadline'):
+                    self.deadlineService.completeDeadline(deadlineId)
+                else:
+                    print("Warning: completeDeadline is not implemented in DeadlineService.")
             
             if self.eventBus:
                 self.eventBus.emit('deadlineCompleted')

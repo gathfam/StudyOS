@@ -6,7 +6,12 @@ class NotesController:
     def loadNotes(self):
         if self.noteService:
             # Mengambil data menggunakan service yang di-inject
-            return self.noteService.getNotes()
+            if hasattr(self.noteService, 'getNotes'):
+                return self.noteService.getNotes()
+            elif hasattr(self.noteService, 'getNote'):
+                return self.noteService.getNote()
+            else:
+                print("Warning: getNotes/getNote is not implemented in NoteService.")
         
         # Data dummy jika noteService belum di-inject (keperluan testing)
         return [
@@ -29,7 +34,10 @@ class NotesController:
     def addNote(self, noteData):
         try:
             if self.noteService:
-                self.noteService.createNote(noteData)
+                if hasattr(self.noteService, 'createNote'):
+                    self.noteService.createNote(**noteData) if isinstance(noteData, dict) else self.noteService.createNote(noteData)
+                else:
+                    print("Warning: createNote is not implemented in NoteService.")
             
             if self.eventBus:
                 self.eventBus.emit('noteCreated')
