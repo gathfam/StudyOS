@@ -1,0 +1,6 @@
+AGENTS.md
+docs_log.md
+core/test_input.py
+__pycache__/
+*.pyc
+*.db
