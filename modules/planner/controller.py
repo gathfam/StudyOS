@@ -11,28 +11,7 @@ class PlannerController:
     def loadTasks(self):
         if self.taskService and hasattr(self.taskService, 'getTask'):
             return self.taskService.getTask()
-        
-        # Dummy data untuk keperluan testing jika taskService belum di-inject
-        return [
-            {
-                "id": 1,
-                "title": "Tugas Matematika Diskrit",
-                "subject": "Matematika",
-                "description": "Mengerjakan soal latihan bab 1 sampai 3",
-                "dueDate": "2026-06-01",
-                "priority": "High",
-                "completed": False
-            },
-            {
-                "id": 2,
-                "title": "Review Design Pattern",
-                "subject": "Software Engineering",
-                "description": "Membaca kembali materi MVC dan Observer pattern",
-                "dueDate": "2026-06-03",
-                "priority": "Medium",
-                "completed": False
-            }
-        ]
+        return []
 
     def addTask(self, taskData):
         try:
@@ -41,15 +20,16 @@ class PlannerController:
         except Exception as e:
             print(f"Error adding task: {e}")
 
-    def completeTask(self, taskId):
+    def updateTaskStatus(self, taskId, completed):
         try:
-            if self.taskService:
-                if hasattr(self.taskService, 'completeTask'):
-                    self.taskService.completeTask(taskId)
-                else:
-                    print("Warning: completeTask is not implemented in TaskService.")
-            
-            if self.eventBus:
-                self.eventBus.emit('taskCompleted')
+            if self.taskService and hasattr(self.taskService, 'updateTaskStatus'):
+                self.taskService.updateTaskStatus(taskId, completed)
         except Exception as e:
-            print(f"Error completing task: {e}")
+            print(f"Error updating task status: {e}")
+
+    def deleteTask(self, taskId):
+        try:
+            if self.taskService and hasattr(self.taskService, 'deleteTask'):
+                self.taskService.deleteTask(taskId)
+        except Exception as e:
+            print(f"Error deleting task: {e}")

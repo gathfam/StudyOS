@@ -1,0 +1,8 @@
+{
+    "accentColor": "#fab387",
+    "fontSize": 13,
+    "defaultStartupPage": "Dashboard",
+    "defaultSidebarState": "Expanded",
+    "enableStartupWizard": true,
+    "lastActivePage": "Pomodoro"
+}

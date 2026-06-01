@@ -13,23 +13,7 @@ class NotesController:
             else:
                 print("Warning: getNotes/getNote is not implemented in NoteService.")
         
-        # Data dummy jika noteService belum di-inject (keperluan testing)
-        return [
-            {
-                "id": 1,
-                "title": "Design Pattern: MVC",
-                "content": "MVC memisahkan aplikasi menjadi 3 komponen: Model, View, dan Controller untuk modularitas.",
-                "noteType": "kuliah",
-                "createdAt": "2026-05-28 09:00:00"
-            },
-            {
-                "id": 2,
-                "title": "Ide Fitur Tambahan",
-                "content": "Mungkin kita bisa menambahkan fitur Pomodoro di fase selanjutnya.",
-                "noteType": "personal",
-                "createdAt": "2026-05-29 10:30:00"
-            }
-        ]
+        return []
 
     def addNote(self, noteData):
         try:
@@ -43,3 +27,29 @@ class NotesController:
                 self.eventBus.emit('noteCreated')
         except Exception as e:
             print(f"Error adding note: {e}")
+
+    def updateNote(self, noteId, noteData):
+        try:
+            if self.noteService:
+                if hasattr(self.noteService, 'updateNote'):
+                    self.noteService.updateNote(noteId, **noteData) if isinstance(noteData, dict) else self.noteService.updateNote(noteId, noteData)
+                else:
+                    print("Warning: updateNote is not implemented in NoteService.")
+            
+            if self.eventBus:
+                self.eventBus.emit('noteUpdated')
+        except Exception as e:
+            print(f"Error updating note: {e}")
+
+    def deleteNote(self, noteId):
+        try:
+            if self.noteService:
+                if hasattr(self.noteService, 'deleteNote'):
+                    self.noteService.deleteNote(noteId)
+                else:
+                    print("Warning: deleteNote is not implemented in NoteService.")
+            
+            if self.eventBus:
+                self.eventBus.emit('noteDeleted')
+        except Exception as e:
+            print(f"Error deleting note: {e}")

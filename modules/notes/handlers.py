@@ -10,3 +10,16 @@ class NotesHandlers:
         }
         self.controller.addNote(noteData)
         print(f"[NotesHandlers] Note added successfully: '{title}'")
+
+    def handleUpdateNoteSubmit(self, noteId, title, content, noteType):
+        noteData = {
+            "title": title,
+            "content": content,
+            "noteType": noteType
+        }
+        self.controller.updateNote(noteId, noteData)
+        print(f"[NotesHandlers] Note updated successfully: ID '{noteId}'")
+
+    def handleDeleteNoteClick(self, noteId):
+        self.controller.deleteNote(noteId)
+        print(f"[NotesHandlers] Note deleted successfully: ID '{noteId}'")

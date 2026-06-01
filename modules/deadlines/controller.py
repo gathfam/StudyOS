@@ -9,47 +9,32 @@ class DeadlinesController:
                 return self.deadlineService.getDeadlines()
             elif hasattr(self.deadlineService, 'getDeadline'):
                 return self.deadlineService.getDeadline()
-            else:
-                print("Warning: getDeadlines/getDeadline is not implemented in DeadlineService.")
-        
-        # Data dummy untuk keperluan testing jika deadlineService belum di-inject
-        return [
-            {
-                "id": 1,
-                "title": "Tugas Besar PBO",
-                "dueDate": "2026-06-15",
-                "status": "open"
-            },
-            {
-                "id": 2,
-                "title": "Presentasi Proyek Akhir",
-                "dueDate": "2026-06-20",
-                "status": "open"
-            }
-        ]
+        return []
 
     def addDeadline(self, deadlineData):
         try:
             if self.deadlineService:
                 if hasattr(self.deadlineService, 'createDeadline'):
                     self.deadlineService.createDeadline(**deadlineData) if isinstance(deadlineData, dict) else self.deadlineService.createDeadline(deadlineData)
-                else:
-                    print("Warning: createDeadline is not implemented in DeadlineService.")
-            
             if self.eventBus:
                 self.eventBus.emit('deadlineAdded')
         except Exception as e:
             print(f"Error adding deadline: {e}")
 
-    def completeDeadline(self, deadlineId):
+    def updateDeadline(self, deadlineId, deadlineDate=None, urgencyLevel=None):
         try:
-            if self.deadlineService:
-                if hasattr(self.deadlineService, 'completeDeadline'):
-                    self.deadlineService.completeDeadline(deadlineId)
-                else:
-                    print("Warning: completeDeadline is not implemented in DeadlineService.")
-            
+            if self.deadlineService and hasattr(self.deadlineService, 'updateDeadline'):
+                self.deadlineService.updateDeadline(deadlineId, deadlineDate, urgencyLevel)
             if self.eventBus:
-                self.eventBus.emit('deadlineCompleted')
+                self.eventBus.emit('deadlineUpdated')
         except Exception as e:
-            print(f"Error completing deadline: {e}")
+            print(f"Error updating deadline: {e}")
+
+    def deleteDeadline(self, deadlineId):
+        try:
+            if self.deadlineService and hasattr(self.deadlineService, 'deleteDeadline'):
+                self.deadlineService.deleteDeadline(deadlineId)
+            if self.eventBus:
+                self.eventBus.emit('deadlineDeleted')
+        except Exception as e:
+            print(f"Error deleting deadline: {e}")
